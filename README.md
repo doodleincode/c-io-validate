@@ -13,8 +13,8 @@ Then pass the function name as a pointer to the instantiation function, like so:
 
 You can also accept user configured parameters. Simple create a Hashtable configuration variable:
 
-  <code>Hashtable *config = init_hashtable();
-  config->add("param_name", "value");</code>
+    Hashtable *config = init_hashtable();
+    config->add("param_name", "value");
 
 Then pass it to the validation instantiation function:
 
