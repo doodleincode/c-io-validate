@@ -14,7 +14,7 @@ Then pass the function name as a pointer to the instantiation function, like so:
 You can also accept user configured parameters. Simple create a Hashtable configuration variable:
 
     Hashtable *config = init_hashtable();
-    config->add("param_name", "value");
+    config->add(config, "param_name", "value");
 
 Then pass it to the validation instantiation function:
 
@@ -22,5 +22,5 @@ Then pass it to the validation instantiation function:
 
 Then in your validation function, you can use the parameter(s) like this:
 
-  <code>this->__cfg__->get(this->__cfg__, "your_param_name");</code>
+  <code>this->\_\_cfg\_\_->get(this->\_\_cfg\_\_, "your_param_name");</code>
 
