@@ -1,7 +1,7 @@
 /**
  * Library to perform basic validation on user input from stdin
  *
- * @author 	Daniel Hong
+ * @author  Daniel Hong
  * 
  * This program is licensed under the GNU GENERAL PUBLIC LICENSE Version 2.
  * A LICENSE file should have accompanied this program.
@@ -64,42 +64,42 @@ int VALIDATE_NUM(IOValidate *this, Status *status, const char *buff)
     double input;
     
     // Check if number first
-	if (is_number(buff) == 0) {
-	    status_set(status, STATUS_INVALID_INPUT, "Input was not a valid number.");
+    if (is_number(buff) == 0) {
+        status_set(status, STATUS_INVALID_INPUT, "Input was not a valid number.");
         return 0;
-	}
-	
-	// Make sure the number isn't larger than a double, we'll just be
-	// doing a simple byte length check
-	if (strlen(buff) > (sizeof(double) * 8)) {
-	    status_set(status, STATUS_INVALID_INPUT, "Input was larger than a double.");
+    }
+    
+    // Make sure the number isn't larger than a double, we'll just be
+    // doing a simple byte length check
+    if (strlen(buff) > (sizeof(double) * 8)) {
+        status_set(status, STATUS_INVALID_INPUT, "Input was larger than a double.");
         return 0;
-	}
-	
-	// Converting input to INT, this works "ok" for floating point numbers since we 
-	// are just checking for a range, but for double/float, we would not be able to 
-	// test a range with floating point precision
-	input = atof(buff);
-	
-	min_num = atof(this->__cfg__->get(this->__cfg__, "min_num", "0"));
-	max_num = atof(this->__cfg__->get(this->__cfg__, "max_num", "0"));
-	
-	// Checking for min number
-	if ((min_num != 0 && input < min_num) || (max_num != 0 && input > max_num)) {
-	    // If max number was not set, we need to show a different message
-	    if (max_num == 0) {
-	        status_format_msg(status, 
+    }
+    
+    // Converting input to INT, this works "ok" for floating point numbers since we 
+    // are just checking for a range, but for double/float, we would not be able to 
+    // test a range with floating point precision
+    input = atof(buff);
+    
+    min_num = atof(this->__cfg__->get(this->__cfg__, "min_num", "0"));
+    max_num = atof(this->__cfg__->get(this->__cfg__, "max_num", "0"));
+    
+    // Checking for min number
+    if ((min_num != 0 && input < min_num) || (max_num != 0 && input > max_num)) {
+        // If max number was not set, we need to show a different message
+        if (max_num == 0) {
+            status_format_msg(status, 
                         STATUS_INVALID_INPUT, "Number must be greater than %.2f.", min_num);
-	    }
-	    else {
-	        status_format_msg(status, 
+        }
+        else {
+            status_format_msg(status, 
                         STATUS_INVALID_INPUT, 
                         "Number outside of allowed range of %.2f to %.2f.", 
                         min_num, max_num);
-	    }
-	    
+        }
+        
         return 0;
-	}
+    }
     
     return 1;
 }
@@ -177,7 +177,7 @@ int _validate_string(IOValidate *this, Status *status, const char *buff, int typ
                 status_set(status, STATUS_INVALID_INPUT, "Invalid characters.");
                 return 0;
             }
-	    }
+        }
         
         return 1;
     }
