@@ -24,4 +24,4 @@ Then in your validation function, you can use the parameter(s) like this:
 
   <code>this->\_\_cfg\_\_->get(this->\_\_cfg\_\_, "your_param_name");</code>
 
-View the test script in ./tests/ to an example usage.
+View the test.c script in ./tests/ for example usage.
