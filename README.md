@@ -1,9 +1,19 @@
 c-io-validate
 =============
 
-IO validation library for C.
+IO validation library for C. This library allows you to easily validate user input from stdin.
 
-The library supports custom validation functions. Simply create a new function with the following prototype:
+The library can be extended by using your own custom validation functions.
+
+Usage
+-------------
+
+View the test.c script in ./tests/ for example usage.
+
+Extend the library with your own validation functions
+-------------
+
+Simply create a new function with the following prototype:
 
   <code>int FUNCTION_NAME(IOValidate *, Status *, const char *)</code>
 
@@ -23,5 +33,3 @@ Then pass it to the validation instantiation function:
 Then in your validation function, you can use the parameter(s) like this:
 
   <code>this->\_\_cfg\_\_->get(this->\_\_cfg\_\_, "your_param_name");</code>
-
-View the test.c script in ./tests/ for example usage.
