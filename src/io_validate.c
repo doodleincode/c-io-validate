@@ -36,8 +36,7 @@ IOValidate *init_validate(Hashtable *cfg, void *validate_func)
 }
 
 // -----------------------------------------------------------------------------
-//  These are accessible through the isvalid() method and should not be 
-//  called directly.
+//  These are accessible through the isvalid() method.
 //
 //  You can write your own validation functions using the following prototype:
 //
@@ -47,17 +46,17 @@ IOValidate *init_validate(Hashtable *cfg, void *validate_func)
 //  Hashtable structure
 // -----------------------------------------------------------------------------
  
-int VALIDATE_ALPHA(IOValidate *this, Status *status, const char *buff)
+static int VALIDATE_ALPHA(IOValidate *this, Status *status, const char *buff)
 {
     return this->__validate_string__(this, status, buff, TYPE_ALPHA);
 }
 
-int VALIDATE_ALPHANUM(IOValidate *this, Status *status, const char *buff)
+static int VALIDATE_ALPHANUM(IOValidate *this, Status *status, const char *buff)
 {
     return this->__validate_string__(this, status, buff, TYPE_ALPHANUM);
 }
 
-int VALIDATE_NUM(IOValidate *this, Status *status, const char *buff)
+static int VALIDATE_NUM(IOValidate *this, Status *status, const char *buff)
 {
     double min_num;
     double max_num;
@@ -69,22 +68,21 @@ int VALIDATE_NUM(IOValidate *this, Status *status, const char *buff)
         return 0;
     }
     
-    // Make sure the number isn't larger than a double, we'll just be
-    // doing a simple byte length check
+    // Make sure the number isn't larger than the size of a double so that
+    // we don't run into undefined behaviors when converting the string to a double
     if (strlen(buff) > (sizeof(double) * 8)) {
         status_set(status, STATUS_INVALID_INPUT, "Input was larger than a double.");
         return 0;
     }
     
-    // Converting input to INT, this works "ok" for floating point numbers since we 
-    // are just checking for a range, but for double/float, we would not be able to 
-    // test a range with floating point precision
+    // We're going to convert the string buffer to a double so that we can
+    // test for floating point numbers as well
     input = atof(buff);
     
     min_num = atof(this->__cfg__->get(this->__cfg__, "min_num", "0"));
     max_num = atof(this->__cfg__->get(this->__cfg__, "max_num", "0"));
     
-    // Checking for min number
+    // Check if we are validating against min or max number
     if ((min_num != 0 && input < min_num) || (max_num != 0 && input > max_num)) {
         // If max number was not set, we need to show a different message
         if (max_num == 0) {
@@ -105,10 +103,11 @@ int VALIDATE_NUM(IOValidate *this, Status *status, const char *buff)
 }
 
 // -----------------------------------------------------------------------------
-//  Private function pointer implementations. These should not be called directly
+//  Private function pointer implementations.
 // -----------------------------------------------------------------------------
 
-int _isvalidlen(IOValidate *this, Status *status, const char *buff)
+// Helper function to check if we are validating against char length
+static int _isvalidlen(IOValidate *this, Status *status, const char *buff)
 {
     int buffsize = strlen(buff);
     int min_chars = atoi(this->__cfg__->get(this->__cfg__, "min_chars", "0"));
@@ -134,7 +133,8 @@ int _isvalidlen(IOValidate *this, Status *status, const char *buff)
     return 1;
 }
 
-int _validate_string(IOValidate *this, Status *status, const char *buff, int type)
+// Helper function to validate against alpha and alphanum
+static int _validate_string(IOValidate *this, Status *status, const char *buff, int type)
 {
     // Check input length validation
     if (! this->__isvalidlen__(this, status, buff)) {
@@ -153,23 +153,22 @@ int _validate_string(IOValidate *this, Status *status, const char *buff, int typ
             }
             
             // Checking alpha
-            // If the character is not alphabetic, return zero immediately
             if (type == TYPE_ALPHA && ! isalpha(buff[i])) {
                 status_set(status, STATUS_INVALID_INPUT, 
-                    "Invalid characters! Only alphabetic characters are allowed.");
+                    "Only alphabetic characters are allowed.");
                 return 0;
             }
             // Checking alphanum
             else if (type == TYPE_ALPHANUM && ! isalnum(buff[i])) {
                 status_set(status, STATUS_INVALID_INPUT, 
-                    "Invalid characters! Only alphanumeric characters are allowed.");
+                    "Only alphanumeric characters are allowed.");
                 return 0;
             }
             
             const char *allowed_chars = this->__cfg__->get(this->__cfg__, "allowed_chars", "");
             
             // Check if we are restricting the characters allowed
-            // and check allowed character list if needed
+            // If we are, we'll test those characters with the input
             if (allowed_chars && 
                 strlen(allowed_chars) > 0 &&
                 strchr(allowed_chars, buff[i]) == NULL) 

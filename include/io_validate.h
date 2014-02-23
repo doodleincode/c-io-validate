@@ -69,16 +69,16 @@ IOValidate *init_validate(Hashtable *, void *);
 //  Hashtable structure
 // -----------------------------------------------------------------------------
 
-int VALIDATE_ALPHA(IOValidate *, Status *, const char *);
-int VALIDATE_ALPHANUM(IOValidate *, Status *, const char *);
-int VALIDATE_NUM(IOValidate *, Status *, const char *);
+static int VALIDATE_ALPHA(IOValidate *, Status *, const char *);
+static int VALIDATE_ALPHANUM(IOValidate *, Status *, const char *);
+static int VALIDATE_NUM(IOValidate *, Status *, const char *);
 
 // -----------------------------------------------------------------------------
 //  Function pointers. These should not be called directly
 // -----------------------------------------------------------------------------
 
-int _isvalidlen(IOValidate *, Status *, const char *);
-int _validate_string(IOValidate *, Status *, const char *, int);
+static int _isvalidlen(IOValidate *, Status *, const char *);
+static int _validate_string(IOValidate *, Status *, const char *, int);
 
 #endif /* _DH_IO_VALIDATE_H_ */
 
