@@ -8,7 +8,15 @@ The library can be extended by using your own custom validation functions.
 Usage
 -------------
 
-View the test.c script in ./tests/ for example usage.
+This library depends on various libraries from my other repositories:
+
+* [c-hashtable](https://github.com/hongmeister/c-hashtable)
+* [c-functions](https://github.com/hongmeister/c-functions)
+  * class.c
+  * status_lib.c
+  * stype.c
+
+View the test.c script in ./tests/ for example usage to get started.
 
 Extend the library with your own validation functions
 -------------
