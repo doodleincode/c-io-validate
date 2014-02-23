@@ -46,17 +46,17 @@ IOValidate *init_validate(Hashtable *cfg, void *validate_func)
 //  Hashtable structure
 // -----------------------------------------------------------------------------
  
-static int VALIDATE_ALPHA(IOValidate *this, Status *status, const char *buff)
+int VALIDATE_ALPHA(IOValidate *this, Status *status, const char *buff)
 {
     return this->__validate_string__(this, status, buff, TYPE_ALPHA);
 }
 
-static int VALIDATE_ALPHANUM(IOValidate *this, Status *status, const char *buff)
+int VALIDATE_ALPHANUM(IOValidate *this, Status *status, const char *buff)
 {
     return this->__validate_string__(this, status, buff, TYPE_ALPHANUM);
 }
 
-static int VALIDATE_NUM(IOValidate *this, Status *status, const char *buff)
+int VALIDATE_NUM(IOValidate *this, Status *status, const char *buff)
 {
     double min_num;
     double max_num;
