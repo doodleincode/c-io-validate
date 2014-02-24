@@ -28,9 +28,9 @@ IOValidate *init_validate(Hashtable *cfg, void *validate_func)
     v->isvalid = validate_func;
     
     // Private members
-    v->__cfg__ = cfg;
-    v->__validate_string__ = _validate_string;
-    v->__isvalidlen__ = _isvalidlen;
+    v->_config = cfg;
+    v->_validate_string = _validate_string_;
+    v->_isvalidlen = _isvalidlen_;
     
     return v;
 }
@@ -48,12 +48,12 @@ IOValidate *init_validate(Hashtable *cfg, void *validate_func)
  
 int VALIDATE_ALPHA(IOValidate *this, Status *status, const char *buff)
 {
-    return this->__validate_string__(this, status, buff, TYPE_ALPHA);
+    return this->_validate_string(this, status, buff, TYPE_ALPHA);
 }
 
 int VALIDATE_ALPHANUM(IOValidate *this, Status *status, const char *buff)
 {
-    return this->__validate_string__(this, status, buff, TYPE_ALPHANUM);
+    return this->_validate_string(this, status, buff, TYPE_ALPHANUM);
 }
 
 int VALIDATE_NUM(IOValidate *this, Status *status, const char *buff)
@@ -79,8 +79,8 @@ int VALIDATE_NUM(IOValidate *this, Status *status, const char *buff)
     // test for floating point numbers as well
     input = atof(buff);
     
-    min_num = atof(this->__cfg__->get(this->__cfg__, "min_num", "0"));
-    max_num = atof(this->__cfg__->get(this->__cfg__, "max_num", "0"));
+    min_num = atof(this->_config->get(this->_config, "min_num", "0"));
+    max_num = atof(this->_config->get(this->_config, "max_num", "0"));
     
     // Check if we are validating against min or max number
     if ((min_num != 0 && input < min_num) || (max_num != 0 && input > max_num)) {
@@ -107,11 +107,11 @@ int VALIDATE_NUM(IOValidate *this, Status *status, const char *buff)
 // -----------------------------------------------------------------------------
 
 // Helper function to check if we are validating against char length
-static int _isvalidlen(IOValidate *this, Status *status, const char *buff)
+static int _isvalidlen_(IOValidate *this, Status *status, const char *buff)
 {
     int buffsize = strlen(buff);
-    int min_chars = atoi(this->__cfg__->get(this->__cfg__, "min_chars", "0"));
-    int max_chars = atoi(this->__cfg__->get(this->__cfg__, "max_chars", "0"));
+    int min_chars = atoi(this->_config->get(this->_config, "min_chars", "0"));
+    int max_chars = atoi(this->_config->get(this->_config, "max_chars", "0"));
     
     // Check if we are validating for min length. If true, check the length
     if (min_chars > 0 && buffsize < min_chars) {
@@ -134,10 +134,10 @@ static int _isvalidlen(IOValidate *this, Status *status, const char *buff)
 }
 
 // Helper function to validate against alpha and alphanum
-static int _validate_string(IOValidate *this, Status *status, const char *buff, int type)
+static int _validate_string_(IOValidate *this, Status *status, const char *buff, int type)
 {
     // Check input length validation
-    if (! this->__isvalidlen__(this, status, buff)) {
+    if (! this->_isvalidlen(this, status, buff)) {
         return 0;
     }
     
@@ -165,7 +165,7 @@ static int _validate_string(IOValidate *this, Status *status, const char *buff, 
                 return 0;
             }
             
-            const char *allowed_chars = this->__cfg__->get(this->__cfg__, "allowed_chars", "");
+            const char *allowed_chars = this->_config->get(this->_config, "allowed_chars", "");
             
             // Check if we are restricting the characters allowed
             // If we are, we'll test those characters with the input

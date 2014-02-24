@@ -41,9 +41,9 @@ CLASS(IOValidate,
     //  and as such are not documented
     // -------------------------------------------------------------------------
     
-    Hashtable *__cfg__;
-    FUNC(int, __isvalidlen__, (struct IOValidate *, Status *, const char *));
-    FUNC(int, __validate_string__, (struct IOValidate *, Status *, const char *, int));
+    Hashtable *_config;
+    FUNC(int, _isvalidlen, (struct IOValidate *, Status *, const char *));
+    FUNC(int, _validate_string, (struct IOValidate *, Status *, const char *, int));
 );
 
 /**
@@ -74,11 +74,11 @@ int VALIDATE_ALPHANUM(IOValidate *, Status *, const char *);
 int VALIDATE_NUM(IOValidate *, Status *, const char *);
 
 // -----------------------------------------------------------------------------
-//  Function pointers. These should not be called directly
+//  Function pointers. These are private functions and cannot be called directly
 // -----------------------------------------------------------------------------
 
-static int _isvalidlen(IOValidate *, Status *, const char *);
-static int _validate_string(IOValidate *, Status *, const char *, int);
+static int _isvalidlen_(IOValidate *, Status *, const char *);
+static int _validate_string_(IOValidate *, Status *, const char *, int);
 
 #endif /* _DH_IO_VALIDATE_H_ */
 

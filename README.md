@@ -40,4 +40,5 @@ Then pass it to the validation instantiation function:
 
 Then in your validation function, you can use the parameter(s) like this:
 
-  <code>this->\_\_cfg\_\_->get(this->\_\_cfg\_\_, "your_param_name");</code>
+  <code>this->\_config->get(this->\_config, "your_param_name");</code>
+
