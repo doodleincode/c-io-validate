@@ -9,21 +9,37 @@ int main()
     Status status;
     char buff[100];
     
-    // Setup configuration for the validation
+    // Setup configuration for validating alphabetic characters
     Hashtable *config = init_hashtable();
     config->add(config, "min_chars", "4");
     config->add(config, "max_chars", "10");
-    //config->add(config, "allowed_chars", "abcd");
-    //config->add(config, "min_num", "10");
-    //config->add(config, "max_num", "1000");
     
     // Instantiate the validation class with configuration and validation type
     IOValidate *v = init_validate(config, VALIDATE_ALPHA);
-    //IOValidate *v = init_validate(config, VALIDATE_ALPHANUM);
-    //IOValidate *v = init_validate(config, VALIDATE_NUM);
+    
+    /*
+    // Setup configuration for validating alphanum characters with specific chars
+    Hashtable *config = init_hashtable();
+    config->add(config, "min_chars", "4");
+    config->add(config, "max_chars", "10");
+    config->add(config, "allowed_chars", "abcd");
+    
+    // Instantiate the validation class with configuration and validation type
+    IOValidate *v = init_validate(config, VALIDATE_ALPHANUM);
+    */
+    
+    /*
+    // Setup configuration for validating numbers
+    Hashtable *config = init_hashtable();
+    config->add(config, "min_num", "10");
+    config->add(config, "max_num", "1000");
+    
+    // Instantiate the validation class with configuration and validation type
+    IOValidate *v = init_validate(config, VALIDATE_NUM);
+    */
     
     // Get user input
-    io_fgets(NULL, buff, sizeof(buff), stdin);
+    fgets(buff, sizeof(buff), stdin);
     
     // Test the user provided input with our validation
     if (v->isvalid(v, &status, buff)) {
